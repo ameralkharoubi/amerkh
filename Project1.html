@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+
+<head>
+<meta charset="utf-8">
+    <script type="text/javascript" src="d3.min.js"></script>
+<title>Bar Graph Demo</title>
+</head>
+
+
+<style>
+ 
+    div.columns       { width: 1000px;}
+    div.columns div   {float: left; margin: 5px}
+    div.grey          { width: 360px; height: 510px; /*background-color: brown;*/ }
+    div.white           { width: 120px; height: 510px; /*background-color: burlywood;*/ }
+    div.clear         { clear: both; }
+    
+    #container {
+            width: 1038px;
+            margin: auto;
+            margin-top: 25px;
+        }       
+
+        .console {
+            text-align: right;
+        }
+        
+        .countries {
+            text-align: left;
+        }
+        
+        .head {
+            width: 1000px;
+            display: inline-block;
+            text-align: center;
+        }
+        .subhead {
+            font-family: 'avenir', cursive;
+            font-size: 0.8em;
+            color: rgb(204,204,204);
+            text-align: center;
+        }
+        .subhead2 {
+            font-family: 'avenir', cursive;
+            font-size: 0.5em;
+            color: rgb(204,204,204);
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-align: center;
+        }
+        
+        .title {
+            font-family: 'avenir', cursive;
+            font-size: 2em;
+            color: rgb(51,51,51);
+            letter-spacing: 0;
+            word-spacing: 0;
+        }
+        
+        .title1 {
+            font-family: 'avenir', cursive;
+            font-size: 0.6em;
+            color: gray;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        
+        .title2 {
+            font-family: 'avenir', cursive;
+            font-size: 0.6em;
+            color: gray;
+            letter-spacing: 0;
+            word-spacing: 0;
+        }
+        
+        .title3 {
+            font-family: 'avenir', cursive;
+            font-size: 0.8em;
+            color: gray;
+            letter-spacing: 0;
+            word-spacing: 0;
+        }
+        
+        .text {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: grey;
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textlightblue {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(41,171,226);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textdarkblue {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(46,49,146);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textpink {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(237,30,121);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textred {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(193,39,45);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textorange {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(251,176,59);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textdarkorange {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(242,103,34);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textbrown {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(166,124,82);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+        .textdarkbrown {
+            font-family: 'avenir', cursive;
+            font-size: 1em;
+            color: rgb(96,56,19);
+            line-height: 1.3em;
+            letter-spacing: 0;
+            word-spacing: 0;
+            text-indent: 0;
+        }
+    /*styles for console charts*/
+    	 #chart {
+		  width: 300px;
+		  height: 500px;
+		  margin-right: 100px;
+	       }
+
+        .tooltip {
+        width: 180px;
+        height: 20px;
+        position: relative;
+        text-align: right;
+        font-family: 'avenir', cursive;
+        color: grey;
+        font-size: 0.7em;
+        }
+    
+    /*styles for Country charts*/
+        #chart2 {
+		  width: 300px;
+		  height: 500px;
+	   }
+
+    .tooltip2 {
+      width: 180px;
+      height: 20px;
+      text-align: left;
+      font-family: 'avenir', cursive;
+      color: grey;
+      font-size: 0.7em;
+      position: relative;
+    }
+ 
+</style>
+
+<body>
+	<div id="container">
+            <div class="head">
+                <h1 class="title">Video Game Consoles in the Arab World</h1>
+                <p class="subhead">Based on web searches in the last 12 months (Sep 25, 2015 - Sep 25, 2016) from Google Trends,
+                <br> this website shows how different the Arab world countries are when it comes to video game concoles popularity.
+                <br> The information presented in this website is crucial for video game developers and inverstors in order for them to study
+                <br> the market of the Arab world
+                and where they should focus their efferots. A quick summary for the data introduced in this website shows that
+                <br> Playstation is the most dominant popular game console, and Xbox is the 2nd. However, the most interesting finding is that <br> portable game consoles are the least popular (including Playstation Vita) and the data shows zero searhces in several countries.</p>
+            </div>
+            
+        <!--columns container-->
+    <div class="columns">
+                <div class="grey" >
+                <div id="chart"></div>
+            </div>
+   
+    <div class="red">
+            <div class="console">
+                <h1 class="title1">Choose a Console</h1>
+                <br><span id="Playstation3" class="textlightblue">Playstation 3</span>
+                <br><span id="Playstation4" class="textdarkblue">Playstation 4</span>
+                <br><span id="Xbox360" class="textpink">Xbox 360</span>
+                <br><span id="XboxOne" class="textred">Xbox One</span>
+                <br><span id="Wii" class="textorange">Wii</span>
+                <br><span id="WiiU" class="textdarkorange">Wii U</span>
+                <br><span id="Nintendo" class="textbrown">Nintendo 3Ds</span>
+                <br><span id="PlaystationVita" class="textdarkbrown">Playstation Vita</span>
+            </div>
+    </div>
+    
+    <div class="red" >
+            <div class="countries">
+                <h1 class="title2">Choose a Console</h1>
+                <br><span id="Algeria" class="text">Algeria</span>            
+                <br><span id="Bahrain" class="text">Bahrain</span>
+                <br><span id="Egypt" class="text">Egypt</span>
+                <br><span id="Djibouti" class="text">Djibouti</span>
+                <br><span id="Iraq" class="text">Iraq</span>
+                <br><span id="Jordan" class="text">Jordan</span>
+                <br><span id="Kuwait" class="text">Kuwait</span>
+                <br><span id="Lebanon" class="text">Lebanon</span>
+                <br><span id="Libya" class="text">Libya</span>
+                <br><span id="Mauritania" class="text">Mauritania</span>
+                <br><span id="Morocco" class="text">Morocco</span>
+                <br><span id="Oman" class="text">Oman</span>
+                <br><span id="Palestine" class="text">Palestine*</span>
+                <br><span id="Qatar" class="text">Qatar</span>
+                <br><span id="Saudi" class="text">Saudi Arabia</span>
+                <br><span id="Somalia" class="text">Somalia</span>
+                <br><span id="Sudan" class="text">Sudan</span>
+                <br><span id="Syria" class="text">Syria</span>
+                <br><span id="Tunisia" class="text">Tunisia</span>
+                <br><span id="UAE" class="text">UAE</span>
+                <br><span id="Yemen" class="text">Yemen</span>
+                  </div>
+                 </div>           
+                 
+                <div class="grey">
+                <div id="chart2"></div>
+                </div>
+
+</div>
+<div class="clear"></div>
+
+            
+            <div class="head">
+                <br><p><h1 class="title3"><a href="VGCITAW2016.png" style="text-decoration: none; color: gray">- view overall data -</a></p>
+                <p class="subhead2">*The information was a combination of the results of Israel since Google has no results for Palestine.</p>
+            </div>
+        </div>
+		</div>
+    
+</body>
+ 
+<script>
+ d3.csv("data/console.csv", function(error, data) {
+
+  var colors = ["rgb(96,56,19)", "rgb(166,124,82)", "rgb(242,103,34)",  "rgb(251,176,59)",  "rgb(193,39,45)", "rgb(237,30,121)","rgb(46,49,146)","rgb(41,171,226)"];
+
+  var padding = {top: 40, right: 0, bottom: 20, left: 200},
+        w = 350 - padding.left - padding.right,
+        h = 227 - padding.top - padding.bottom;
+
+  var yScale = d3.scale.ordinal()
+		    .domain(data.map(function(d) { return d.Console; }))
+		    .rangeRoundBands([h, 0], .05);
+
+  var xScale = d3.scale.linear()
+		    .domain([0, d3.max(data, function(d) { return d.Algeria; })])
+		    .range([0, w]);
+
+  var svg = d3.select("#chart")
+	      .append("svg")
+        .attr("width", w + padding.left + padding.right)
+        .attr("height", h + padding.top + padding.bottom)
+        .append("g")
+        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+  // we separate this out because we'll be re-using this several times
+  var bars = svg.selectAll("bar").data(data);
+ 
+  // we need to create the svg rectangles beforehand. otherwise the code won't work.       
+  bars.enter().append("rect");
+
+
+//------------------------------------//
+// Start of Interactive D3 Components
+
+  var div = d3.select("#chart")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+d3.select("#Algeria").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Algeria); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Algeria); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Algeria +"%") 
+          .style("left", w - xScale(d.Algeria) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});
+
+d3.select("#Bahrain").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Bahrain); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Bahrain); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Bahrain +"%") 
+          .style("left", w - xScale(d.Bahrain) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});
+
+d3.select("#Egypt").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Egypt); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Egypt); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Egypt +"%") 
+          .style("left", w - xScale(d.Egypt) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});
+
+d3.select("#Djibouti").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Djibouti); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Djibouti); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Djibouti +"%") 
+          .style("left", w - xScale(d.Djibouti) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});
+
+d3.select("#Iraq").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Iraq); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Iraq); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Iraq +"%") 
+          .style("left", w - xScale(d.Iraq) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});
+      
+d3.select("#Jordan").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Jordan); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Jordan); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Jordan +"%") 
+          .style("left", w - xScale(d.Jordan) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});      
+
+d3.select("#Kuwait").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Kuwait); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Kuwait); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Kuwait +"%") 
+          .style("left", w - xScale(d.Kuwait) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Lebanon").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Lebanon); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Lebanon); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Lebanon +"%") 
+          .style("left", w - xScale(d.Lebanon) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Libya").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Libya); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Libya); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Libya +"%") 
+          .style("left", w - xScale(d.Libya) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});      
+      
+d3.select("#Mauritania").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Mauritania); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Mauritania); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Mauritania +"%") 
+          .style("left", w - xScale(d.Mauritania) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Morocco").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Morocco); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Morocco); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Morocco +"%") 
+          .style("left", w - xScale(d.Morocco) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Oman").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Oman); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Oman); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Oman +"%") 
+          .style("left", w - xScale(d.Oman) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+      
+d3.select("#Palestine").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Palestine); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Palestine); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Palestine +"%") 
+          .style("left", w - xScale(d.Palestine) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Qatar").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Qatar); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Qatar); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Qatar +"%") 
+          .style("left", w - xScale(d.Qatar) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Saudi").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d['Saudi Arabia']); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d['Saudi Arabia']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Saudi Arabia'] +"%") 
+          .style("left", w - xScale(d['Saudi Arabia']) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+
+d3.select("#Somalia").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Somalia); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Somalia); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Somalia +"%") 
+          .style("left", w - xScale(d.Somalia) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+ d3.select("#Sudan").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Sudan); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Sudan); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Sudan +"%") 
+          .style("left", w - xScale(d.Sudan) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+      
+d3.select("#Syria").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Syria); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Syria); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Syria +"%") 
+          .style("left", w - xScale(d.Syria) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Tunisia").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Tunisia); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Tunisia); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Tunisia +"%") 
+          .style("left", w - xScale(d.Tunisia) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+  
+d3.select("#UAE").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.UAE); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.UAE); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.UAE +"%") 
+          .style("left", w - xScale(d.UAE) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});       
+      
+d3.select("#Yemen").on("click", function() { // function that renders the second set of bars
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", function(d) { return w - xScale(d.Yemen); })
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Console); })
+        .attr("width", function(d) { return xScale(d.Yemen); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d.Yemen +"%") 
+          .style("left", w - xScale(d.Yemen) + 7 + "px")
+          .style("top", yScale(d.Console) + -193 + "px");
+
+        })
+        .on("mouseout", function(d) {
+
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+});     
+      
+      
+      
+});
+    
+    
+ d3.csv("data/Playstation.csv", function(error, data) {
+
+  var colors = ["lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey"];
+
+  var padding = {top: 40, right: 20, bottom: 20, left: 5},
+        w = 200 - padding.left - padding.right,
+        h = 490 - padding.top - padding.bottom;
+
+  var yScale = d3.scale.ordinal()
+		    .domain(data.map(function(d) { return d.Country; }))
+		    .rangeRoundBands([h, 0], .05);
+
+  var xScale = d3.scale.linear()
+		    .domain([0, d3.max(data, function(d) { return d['Playstation 3']; })])
+		    .range([0, w]);
+
+  var svg = d3.select("#chart2")
+	    .append("svg")
+        .attr("width", w + padding.left + padding.right)
+        .attr("height", h + padding.top + padding.bottom)
+        .append("g")
+        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+  var bars = svg.selectAll("bar").data(data);
+ 
+  bars.enter().append("rect");
+
+
+  var div = d3.select("#chart2")
+        .append("div")
+        .attr("class", "tooltip2")
+        .style("opacity", 0);
+
+d3.select("#Playstation3").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Playstation 3']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Playstation 3'] +"%") 
+          .style("left", xScale(d['Playstation 3']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+
+d3.select("#Playstation4").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Playstation 4']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Playstation 4'] +"%") 
+          .style("left", xScale(d['Playstation 4']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+ d3.select("#Xbox360").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Xbox 360']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Xbox 360'] +"%") 
+          .style("left", xScale(d['Xbox 360']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+  d3.select("#XboxOne").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Xbox One']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Xbox One'] +"%") 
+          .style("left", xScale(d['Xbox One']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+  d3.select("#Wii").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Wii']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Wii'] +"%") 
+          .style("left", xScale(d['Wii']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+  d3.select("#WiiU").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Wii U']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Wii U'] +"%") 
+          .style("left", xScale(d['Wii U']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+  d3.select("#Nintendo").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Nintendo 3Ds']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Nintendo 3Ds'] +"%") 
+          .style("left", xScale(d['Nintendo 3Ds']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+ d3.select("#PlaystationVita").on("click", function() { 
+
+        bars.attr("fill", function(d,i) {return colors[i];})
+        .attr("x", 0)
+        .attr("height", yScale.rangeBand())
+        .attr("y", function(d) { return yScale(d.Country); })
+        .attr("width", function(d) { return xScale(d['Playstation Vita']); })
+        .on("mouseover", function(d) {
+        
+        div.transition()
+          .duration(200)
+          .style("opacity", 1);
+
+        div.html("percentage of searches is " + d['Playstation Vita'] +"%") 
+          .style("left", xScale(d['Playstation Vita']) + 10 + "px")
+          .style("top", yScale(d.Country) + -458 + "px");
+
+        })
+        .on("mouseout", function(d) { 
+          div.transition()
+          .duration(500)
+          .style("opacity", 0);
+        });
+}); 
+ 
+ 
+ });
+</script>
